@@ -11,7 +11,6 @@
   - [Defining a Configuration Schema](#defining-a-configuration-schema)
   - [Loading Configuration](#loading-configuration)
   - [Usage Examples](#usage-examples)
-- [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -137,25 +136,6 @@ const configSchema = z.object({
 const config = loadConfig(configSchema, { configFilePath: "./config.json" });
 console.log("Loaded configuration (env and config.json):", config);
 
-```
-
-## Testing
-
-The library uses Jest for testing. To run tests:
-
-- Install development dependencies:
-```bash
-npm install --save-dev jest ts-jest @types/jest
-```
-
-- Initialize Jest configuration (if not already done):
-```bash
-npx ts-jest config:init
-```
-
-- Run tests:
-```bash
-npm run test
 ```
 
 ## Contributing
