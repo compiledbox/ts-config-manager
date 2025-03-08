@@ -46,7 +46,7 @@ Managing application configuration—especially when merging multiple sources li
 Install the library along with its required dependencies using npm:
 
 ```bash
-npm install ts-config-manager
+npm install @compiledbox/ts-config-manager
 ```
 
 ## Usage 
@@ -82,7 +82,7 @@ const configSchema = z.object({
 Use the `loadConfig` function to load and validate your configuration:
 
 ```bash
-import { loadConfig } from "ts-config-manager";
+import { loadConfig } from "@compiledbox/ts-config-manager";
 
 // Load configuration from environment variables (.env file loaded automatically)
 // or merge with a config.json file if specified.
@@ -97,7 +97,7 @@ Example 1: Environment Variables Only
 
 ```bash
 import { z } from "zod";
-import { loadConfig } from "ts-config-manager";
+import { loadConfig } from "@compiledbox/ts-config-manager";
 
 const configSchema = z.object({
   PORT: z.preprocess(
@@ -120,7 +120,7 @@ Example 2: Environment Variables and config.json
 
 ```bash
 import { z } from "zod";
-import { loadConfig } from "ts-config-manager";
+import { loadConfig } from "@compiledbox/ts-config-manager";
 
 const configSchema = z.object({
   PORT: z.preprocess(

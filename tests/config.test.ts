@@ -3,7 +3,7 @@ import { loadConfig } from "../src/index";
 import fs from "fs";
 import path from "path";
 
-describe("ts-config-manager", () => {
+describe("@compiledbox/ts-config-manager", () => {
   const configSchema = z.object({
     PORT: z.preprocess(
       (val) => (typeof val === "string" && val.trim() !== "" ? val : "3000"),

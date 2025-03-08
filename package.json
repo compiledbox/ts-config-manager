@@ -1,5 +1,5 @@
 {
-    "name": "ts-config-manager",
+    "name": "@compiledbox/ts-config-manager",
     "version": "1.0.0",
     "description": "A type-safe environment configuration manager for TypeScript projects.",
     "main": "dist/index.js",
