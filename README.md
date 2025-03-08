@@ -11,13 +11,7 @@
   - [Defining a Configuration Schema](#defining-a-configuration-schema)
   - [Loading Configuration](#loading-configuration)
   - [Usage Examples](#usage-examples)
-- [API Reference](#api-reference)
-  - [loadConfig](#loadconfig)
-  - [validateConfig](#validateconfig)
-  - [loadConfigFromEnv](#loadconfigfromenv)
-  - [maskSecrets](#masksecrets)
 - [Testing](#testing)
-- [Best Practices](#best-practices)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -53,3 +47,125 @@ Install the library along with its required dependencies using npm:
 
 ```bash
 npm install ts-config-manager
+```
+
+## Usage 
+
+Defining a Configuration Schema
+Define your configuration schema using Zod. For example:
+
+```bash
+import { z } from "zod";
+
+const configSchema = z.object({
+  PORT: z.preprocess(
+    (val) => (typeof val === "string" && val.trim() !== "" ? val : "3000"),
+    z.string()
+  ).transform((val) => Number(val)),
+  DB_HOST: z.string(),
+  DB_PORT: z.preprocess(
+    (val) => (typeof val === "string" && val.trim() !== "" ? val : "5432"),
+    z.string()
+  ).transform((val) => Number(val)),
+  NESTED: z.object({
+    FEATURE_FLAG: z.preprocess(
+      (val) => (typeof val === "string" && val.trim() !== "" ? val : "false"),
+      z.string()
+    ).transform((val) => val === "true")
+  }).optional()
+});
+
+```
+
+## Loading Configuration
+
+Use the `loadConfig` function to load and validate your configuration:
+
+```bash
+import { loadConfig } from "ts-config-manager";
+
+// Load configuration from environment variables (.env file loaded automatically)
+// or merge with a config.json file if specified.
+const config = loadConfig(configSchema, { configFilePath: "./config.json" });
+
+console.log("Loaded configuration:", config);
+
+```
+## Usage Examples
+
+Example 1: Environment Variables Only
+
+```bash
+import { z } from "zod";
+import { loadConfig } from "ts-config-manager";
+
+const configSchema = z.object({
+  PORT: z.preprocess(
+    (val) => (typeof val === "string" && val.trim() !== "" ? val : "3000"),
+    z.string()
+  ).transform((val) => Number(val)),
+  DB_HOST: z.string(),
+  DB_PORT: z.preprocess(
+    (val) => (typeof val === "string" && val.trim() !== "" ? val : "5432"),
+    z.string()
+  ).transform((val) => Number(val))
+});
+
+const config = loadConfig(configSchema);
+console.log("Loaded configuration (env only):", config);
+
+```
+
+Example 2: Environment Variables and config.json
+
+```bash
+import { z } from "zod";
+import { loadConfig } from "ts-config-manager";
+
+const configSchema = z.object({
+  PORT: z.preprocess(
+    (val) => (typeof val === "string" && val.trim() !== "" ? val : "3000"),
+    z.string()
+  ).transform((val) => Number(val)),
+  DB_HOST: z.string(),
+  DB_PORT: z.preprocess(
+    (val) => (typeof val === "string" && val.trim() !== "" ? val : "5432"),
+    z.string()
+  ).transform((val) => Number(val))
+});
+
+const config = loadConfig(configSchema, { configFilePath: "./config.json" });
+console.log("Loaded configuration (env and config.json):", config);
+
+```
+
+## Testing
+
+The library uses Jest for testing. To run tests:
+
+- Install development dependencies:
+```bash
+npm install --save-dev jest ts-jest @types/jest
+```
+
+- Initialize Jest configuration (if not already done):
+```bash
+npx ts-jest config:init
+```
+
+- Run tests:
+```bash
+npm run test
+```
+
+## Contributing
+Contributions are welcome! Please:
+
+- Fork the repository.
+- Create a branch for your changes.
+- Write tests for any new features.
+- Submit a pull request with detailed changes.
+
+## License
+
+This project is licensed under the MIT License
