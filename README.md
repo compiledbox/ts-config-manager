@@ -11,7 +11,7 @@
   - [Defining a Configuration Schema](#defining-a-configuration-schema)
   - [Loading Configuration](#loading-configuration)
   - [Usage Examples](#usage-examples)
-- [Error Handling](#error)
+- [Error Handling](#error-handling)
   - [ConfigurationError](#configurationerror)
   - [Handling Errors in Your Application](#handling-errors-in-your-application)
   
