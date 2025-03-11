@@ -53,7 +53,7 @@ npm install @compiledbox/ts-config-manager
 Defining a Configuration Schema
 Define your configuration schema using Zod. For example:
 
-```bash
+```typescript
 import { z } from "zod";
 
 const configSchema = z.object({
@@ -80,7 +80,7 @@ const configSchema = z.object({
 
 Use the `loadConfig` function to load and validate your configuration:
 
-```bash
+```typescript
 import { loadConfig } from "@compiledbox/ts-config-manager";
 
 // Load configuration from environment variables (.env file loaded automatically)
@@ -94,7 +94,7 @@ console.log("Loaded configuration:", config);
 
 Example 1: Environment Variables Only
 
-```bash
+```typescript
 import { z } from "zod";
 import { loadConfig } from "@compiledbox/ts-config-manager";
 
@@ -117,7 +117,7 @@ console.log("Loaded configuration (env only):", config);
 
 Example 2: Environment Variables and config.json
 
-```bash
+```typescript
 import { z } from "zod";
 import { loadConfig } from "@compiledbox/ts-config-manager";
 
@@ -137,6 +137,68 @@ const config = loadConfig(configSchema, { configFilePath: "./config.json" });
 console.log("Loaded configuration (env and config.json):", config);
 
 ```
+## Error Handling
+
+When loading and validating your configuration with ts-config-manager, any issues in your configuration will cause the library to throw a custom error called ConfigurationError. This error extends the standard Error object and provides detailed information about the validation issues.
+
+### ConfigurationError
+
+ConfigurationError includes an errors property that contains two key pieces of information:
+- fieldErrors:
+An object mapping each configuration field to an array of error messages. For example:
+
+```json
+{
+  "PORT": [ "Enter Valid Port" ],
+  "DB_HOST": [ "Enter Valid Host" ]
+}
+```
+- formErrors:
+An array of general error messages that are not tied to a specific field.
+
+### Handling Errors in Your Application
+
+You can import the ConfigurationError class from the library and wrap your configuration loading in a try/catch block. This allows you to inspect the detailed error messages and provide a clear response to the user.
+
+```typescript
+import { loadConfig } from "@compiledbox/ts-config-manager";
+import { ConfigurationError } from "@compiledbox/ts-config-manager/dist/schema-validator";
+import { z } from "zod";
+
+// Define your configuration schema using Zod with custom error messages
+const configSchema = z.object({
+  PORT: z.preprocess(
+    (val) => (typeof val === "string" && val.trim() !== "" ? val : undefined),
+    z.string({ required_error: "Enter Valid Port" }).nonempty({ message: "Enter Valid Port" })
+  ).transform((val) => Number(val)),
+  DB_HOST: z.string({ required_error: "Enter Valid Host" }).nonempty({ message: "Enter Valid Host" }),
+});
+
+try {
+  // Attempt to load configuration (from environment variables and an optional config.json)
+  const config = loadConfig(configSchema, { configFilePath: "./config.json" });
+  console.log("Loaded configuration:", config);
+} catch (error) {
+  if (error instanceof ConfigurationError) {
+    // Extract detailed error messages
+    const { fieldErrors, formErrors } = error.errors;
+    
+    // Iterate over field errors and display them
+    Object.entries(fieldErrors).forEach(([field, messages]) => {
+      console.error(`Error in ${field}: ${messages.join(", ")}`);
+    });
+    
+    // Display general form errors, if any
+    if (formErrors && formErrors.length > 0) {
+      console.error(`General configuration errors: ${formErrors.join(", ")}`);
+    }
+  } else {
+    console.error("An unexpected error occurred:", error);
+  }
+}
+
+```
+
 
 ## Contributing
 Contributions are welcome! Please:
