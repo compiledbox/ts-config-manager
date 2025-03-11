@@ -1,6 +1,6 @@
 {
     "name": "@compiledbox/ts-config-manager",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A type-safe environment configuration manager for TypeScript projects.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -8,6 +8,11 @@
         "build": "tsc",
         "clean": "rm -rf dist",
         "test": "jest"
+    },
+    "homepage": "https://compiledbox.com",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/compiledbox/ts-config-manager.git"
     },
     "keywords": [
         "typescript",
