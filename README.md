@@ -11,6 +11,10 @@
   - [Defining a Configuration Schema](#defining-a-configuration-schema)
   - [Loading Configuration](#loading-configuration)
   - [Usage Examples](#usage-examples)
+- [Error Handling](#error)
+  - [ConfigurationError](#configurationerror)
+  - [Handling Errors in Your Application](#handling-errors-in-your-application)
+  
 - [Contributing](#contributing)
 - [License](#license)
 
